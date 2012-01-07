@@ -10,6 +10,7 @@ npm install dripps-express-mvc
 
 ## Application Structure
 
+```
 example_app
  - app.js
  - controllers
@@ -23,6 +24,7 @@ example_app
  -  -  - 500.jade
  -  - index
  -  -  - index.jade
+ ```
 
 see the examples directory for more information.
 
@@ -31,18 +33,16 @@ see the examples directory for more information.
 After installing the NPM package we need to add it to Express.  Place the following in your app.js after your configuration (including ```app.use(app.router)```) and any custom routes you may have specified.  In practice, this line usually immediately precedes ```app.listen(port)```.
 
 ``` javascript
-
 require('dripps-express-mvc')(req, res);
-
 ```
 
 ### Naming Controllers
 Controller names represent the first section of the url path.  They are alphanumeric and completely lowercase.
 
 For example: Requests to any of the following urls would be routed to APPLICATION_PATH/controllers/user.js
-- http://www.example.com/user
-- http://www.example.com/User
-- http://www.example.com/USER
+* http://www.example.com/user
+* http://www.example.com/User
+* http://www.example.com/USER
 
 ### Naming Controller Methods
 Controller methods are named based on the request method and the action name.  The action name is the second portion of the url path immediately following the controller name and separated by a forward slash (/).  The request method is prepended to the action name and the entire string in camelCased based on the URL Formatting guidelines below.
@@ -51,7 +51,7 @@ For example: a GET request to "/user/login" would be routed to the getLogin() me
 
 Note: requests to a naked controller name are routed assuming an action name of "index" and based on the same guidelines as above.  So a PUT request to "/user" would be routed to the putIndex() method of the user.js controller.
 
-#### The preDispatch method
+### The preDispatch method
 A special method is provided for controller-level processing for each request.  If implemented, this method must return a value equating to either ```true``` or ```false``` indicating whether the request should continue onto the controller method being requested.
 
 A common use of the preDispatch method is for authenticating a user prior for all methods of the controller or checking ACL rules for an admin section.
@@ -59,7 +59,7 @@ A common use of the preDispatch method is for authenticating a user prior for al
 ### Additional Parameters
 Additional parameters are derived from any portions of the url path following the action name.  They are supplied in pairs with a forward slash (/) separating the key and value as well as key/value pairs.  They are exposed as an object to your methods via ```req.params.params```.
 
-For example: the following endpoint would provide a value of ```1``` for ```req.params.params.id```: /user/show/id/1
+For example: the following endpoint would provide a value of ```1``` for ```req.params.params.id```: "/user/show/id/1"
 
 ### URL Formatting
 
