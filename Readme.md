@@ -1,6 +1,6 @@
 # Dripps's Express MVC
 
-Yet another approach to MVC in Express.  Coming from a PHP/Zend background, the conventions used here seem more intuitive to me than the other options I uncovered while building [Netmarks](http://www.mynetmarks.com, "Netmarks").
+Yet another approach to MVC in Express.  Coming from a PHP/Zend background, the conventions used here seem more intuitive to me than the other options I uncovered while building [Netmarks](http://www.mynetmarks.com "Netmarks").
 
 ## Installation
 
@@ -48,7 +48,7 @@ For example: Requests to any of the following urls would be routed to APPLICATIO
 *    http://www.example.com/USER
 
 ### Naming Controller Methods
-Controller methods are named based on the request method and the action name.  The action name is the second portion of the url path immediately following the controller name and separated by a forward slash (/).  The request method is prepended to the action name and the entire string in camelCased based on the URL Formatting guidelines below.
+Controller methods are named based on the request method and the action name.  The action name is the second portion of the url path immediately following the controller name and separated by a forward slash (/).  The request method is prepended to the action name and the entire string in camelCased based on the URL Formatting guidelines below.  Due to the camelCasing all characters except the first character of each word are converted to lowercase.
 
 For example: a GET request to "/user/login" would be routed to the getLogin() method in the user.js controller.
 
