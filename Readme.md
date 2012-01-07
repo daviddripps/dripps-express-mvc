@@ -40,9 +40,12 @@ require('dripps-express-mvc')(req, res);
 Controller names represent the first section of the url path.  They are alphanumeric and completely lowercase.
 
 For example: Requests to any of the following urls would be routed to APPLICATION_PATH/controllers/user.js
-*  http://www.example.com/user
-*  http://www.example.com/User
-*  http://www.example.com/USER
+
+*    http://www.example.com/user
+
+*    http://www.example.com/User
+
+*    http://www.example.com/USER
 
 ### Naming Controller Methods
 Controller methods are named based on the request method and the action name.  The action name is the second portion of the url path immediately following the controller name and separated by a forward slash (/).  The request method is prepended to the action name and the entire string in camelCased based on the URL Formatting guidelines below.
