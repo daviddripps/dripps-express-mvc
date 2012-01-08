@@ -1,5 +1,7 @@
 module.exports = function(req, res)
 {
+    var fs = require('fs');
+    
     //MVC routes
     function routeRequest(req, res)
     {

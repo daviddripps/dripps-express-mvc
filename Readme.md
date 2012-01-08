@@ -26,7 +26,7 @@ example_app
        index.jade
  ```
 
-see the examples directory for more information.
+see the example directory for more information.
 
 ## Usage
 
