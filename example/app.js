@@ -2,7 +2,8 @@
  * Module dependencies.
  */
 
-var express = require('express');
+var express = require('express'),
+    mvc = require('../')(__dirname + '/controllers');
 
 var app = module.exports = express.createServer();
 
@@ -14,6 +15,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
+  app.use(mvc.middleware);
   app.use(express.static(__dirname + '/public'));
 });
 
@@ -25,9 +27,6 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-// Routes
-
-require('dripps-express-mvc');
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

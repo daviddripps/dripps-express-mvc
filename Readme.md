@@ -1,6 +1,6 @@
 # Dripps's Express MVC
 
-Yet another approach to MVC in Express.  Coming from a PHP/Zend background, the conventions used here seem more intuitive to me than the other options I uncovered while building [Netmarks](http://www.mynetmarks.com "Netmarks").
+Yet another approach to MVC in Express.  Coming from a PHP/Zend background, the conventions used here seem more intuitive to me than the other options I uncovered while building [Netmarks](http://www.mynetmarks.com).
 
 ## Installation
 
@@ -30,11 +30,19 @@ see the example directory for more information.
 
 ## Usage
 
-After installing the NPM package we need to add it to Express.  Place the following in your app.js after your configuration (including ```app.use(app.router)```) and any custom routes you may have specified.  In practice, this line usually immediately precedes ```app.listen(port)```.
+After installing the NPM package we need to add it to Express.  Place the following in your app.js before your app.configure().  The module takes the absolute path to the controllers directory as its only parameter.
 
 ``` javascript
-require('dripps-express-mvc')(req, res);
+var mvc = require('dripps-express-mvc')(__dirname + '/controllers');
 ```
+
+Then, place the following in your app.configure() somewhere after ```app.use(app.router)```.
+
+``` javascript
+app.use(mvc.middleware);
+```
+
+See the example app if you're experiencing issues.  If that doesn't help, feel free to email me (it usually takes me a few days to respond though).
 
 ### Naming Controllers
 Controller names represent the first section of the url path.  They are alphanumeric and completely lowercase.

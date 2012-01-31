@@ -1,12 +1,15 @@
-module.exports = function(req, res)
+module.exports = function(controller_dir)
 {
-    var fs = require('fs');
+    var fs = require('fs'),
+        dir = controller_dir;
+    
+    if(dir.charAt(dir.length-1) != '/') dir += '/';
     
     //MVC routes
     function routeRequest(req, res)
     {
-        var controller = req.params.controller.toLowerCase(),
-            action = req.params.action.toLowerCase();
+        var controller = req.params.controller,
+            action = req.params.action;
         
         if(! action)
         {
@@ -18,49 +21,14 @@ module.exports = function(req, res)
             }
         }
         
-        var filename = __dirname + '/controllers/' + controller + '.js';
-    
+        action = action.toLowerCase();
+        controller = controller.toLowerCase();
+        
+        var filename = dir + controller + '.js';
+
         fs.stat(filename, function(err, stats)
         {
-            String.prototype.camelCase = function()
-            {
-                return this.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
-            };
-            
-            //if there are errors
-            if(err)
-            {
-                try
-                {
-                    //see if the req.params.controller name exists as an action in the index controller
-                    action = req.params.action = controller;
-                    controller = req.params.controller = 'index';
-                    var fakeAction = req.method.toLowerCase() + '-' + action;
-                    return require(__dirname + '/controllers/index.js')[fakeAction.camelCase()](req, res);
-                }
-                catch(ex)
-                {
-                    //action was not found in the index controller
-                    res.statusCode = 404;
-                }
-                
-                return res.end();
-            }
-            
-            //prepend the request method to the action name
-            action = req.method.toLowerCase() + '-' + action;
-            
-            //do a controller-level preDispatch
-            var flag = true;
-            try { flag = require(filename).pre(req, res); } catch(ignore) { /* ignore it if it doesn't exist */ }
-            
-            //execute the requested method
-            try
-            {
-                if(flag)
-                    require(filename)[action.camelCase()](req, res);
-            }
-            catch(error)
+            function handleError(error)
             {
                 if(error.type == 'property_not_function')
                 {
@@ -79,8 +47,56 @@ module.exports = function(req, res)
                     });
                 }
             }
+            
+            String.prototype.camelCase = function()
+            {
+                return this.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
+            };
+            
+            //if there are errors
+            if(err)
+            {
+                try
+                {
+                    //see if the req.params.controller name exists as an action in the index controller
+                    action = req.params.action = controller;
+                    controller = req.params.controller = 'index';
+                    var fakeAction = req.method.toLowerCase() + '-' + action;
+                    return require(dir + 'index.js')[fakeAction.camelCase()](req, res);
+                }
+                catch(ex)
+                {
+                    //action was not found in the index controller
+                    return handleError(ex);
+                }
+            }
+            
+            //prepend the request method to the action name
+            action = req.method.toLowerCase() + '-' + action;
+            
+            //do a controller-level preDispatch
+            var flag = true;
+            try { flag = require(filename).pre(req, res); } catch(ignore) { /* ignore it if it doesn't exist */ }
+            
+            //execute the requested method
+            try
+            {
+                if(flag)
+                    require(filename)[action.camelCase()](req, res);
+            }
+            catch(ex)
+            {
+                handleError(ex);
+            }
         });
     };
     
-    app.all('/:controller?/:action?/:params?', routeRequest);
+    return {
+        middleware: function(req, res, next)
+        {
+            req.app.all('/:controller?/:action?/:params?', routeRequest);
+            
+            next();
+        }
+    }
 }
