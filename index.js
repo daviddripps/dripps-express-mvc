@@ -1,8 +1,12 @@
 module.exports = function(controller_dir)
 {
     var fs = require('fs'),
-        dir = controller_dir;
+        dir = controller_dir,
+        handleError = function(err, req, res) {
+          throw err;
+        };
     
+    //add slash to controller dir
     if(dir.charAt(dir.length-1) != '/') dir += '/';
     
     //MVC routes
@@ -28,26 +32,6 @@ module.exports = function(controller_dir)
 
         fs.stat(filename, function(err, stats)
         {
-            function handleError(error)
-            {
-                if(error.type == 'property_not_function')
-                {
-                    res.statusCode = 404;
-                    
-                    return res.render('error/404', {
-                        error: error
-                    });
-                }
-                else
-                {
-                    res.statusCode = 500;                
-                    
-                    return res.render('error/500', {
-                        error: error
-                    });
-                }
-            }
-            
             String.prototype.camelCase = function()
             {
                 return this.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
@@ -67,7 +51,7 @@ module.exports = function(controller_dir)
                 catch(ex)
                 {
                     //action was not found in the index controller
-                    return handleError(ex);
+                    return handleError(ex, req, res);
                 }
             }
             
@@ -86,7 +70,7 @@ module.exports = function(controller_dir)
             }
             catch(ex)
             {
-                handleError(ex);
+                handleError(ex, req, res);
             }
         });
     };
@@ -97,6 +81,10 @@ module.exports = function(controller_dir)
             req.app.all('/:controller?/:action?/:params?', routeRequest);
             
             next();
+        },
+        onError: function(newHandler)
+        {
+            handleError = newHandler;
         }
     }
 }

@@ -44,6 +44,17 @@ app.use(mvc.middleware);
 
 See the example app if you're experiencing issues.  If that doesn't help, feel free to email me (it usually takes me a few days to respond though).
 
+### Error Handling
+By default, any errors (i.e. 404, 500, etc) will simply be thrown.  To handle these errors gracefully, an onError method allows you to provide a custom error handler.  The usage is as follows:
+
+``` javascript
+mvc.onError(function(error, req, res){
+  // your error handling stuff
+});
+```
+
+Again, see the example app or email me for a more detailed example.
+
 ### Naming Controllers
 Controller names represent the first section of the url path.  They are alphanumeric and completely lowercase.
 

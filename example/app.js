@@ -7,6 +7,24 @@ var express = require('express'),
 
 var app = module.exports = express.createServer();
 
+// Error Handling
+
+mvc.onError(function(error, req, res) {
+  if(error.type == 'property_not_function') {
+    res.statusCode = 404;
+    
+    return res.render('error/404', {
+        error: error
+    });
+  } else {
+    res.statusCode = 500;                
+    
+    return res.render('error/500', {
+        error: error
+    });
+  }
+});
+
 // Configuration
 
 app.configure(function(){
