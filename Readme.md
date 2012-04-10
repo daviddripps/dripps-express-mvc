@@ -36,7 +36,7 @@ After installing the NPM package we need to add it to Express.  Place the follow
 var mvc = require('dripps-express-mvc')(__dirname + '/controllers');
 ```
 
-Then, place the following in your app.configure() somewhere after ```app.use(app.router)```.
+Then, place the following in your ```app.configure()``` somewhere before ```app.use(express.static(__dirname + '/public'))``` and ```app.use(app.router)```.
 
 ``` javascript
 app.use(mvc.middleware);
