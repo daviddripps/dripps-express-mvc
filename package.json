@@ -2,7 +2,7 @@
   "name": "dripps-express-mvc",
   "author": "David Dripps <david.dripps@gmail.com> (http://www.daviddripps.com)",
   "description": "yet another approach to MVC in Express/Connect",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "repository": {
     "type": "git",
     "url": "git://github.com/daviddripps/dripps-express-mvc.git"

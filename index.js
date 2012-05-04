@@ -45,8 +45,14 @@ module.exports = function(controller_dir)
                     //see if the req.params.controller name exists as an action in the index controller
                     action = req.params.action = controller;
                     controller = req.params.controller = 'index';
-                    var fakeAction = req.method.toLowerCase() + '-' + action;
-                    return require(dir + 'index.js')[fakeAction.camelCase()](req, res);
+                    
+                    var controllerObject = require(dir + 'index.js'),
+                        fakeAction = (req.method.toLowerCase() + '-' + action).camelCase();
+                    
+                    if(typeof controllerObject[fakeAction] != 'function')
+                      return res.send(404);
+                    
+                    return require(dir + 'index.js')[fakeAction](req, res);
                 }
                 catch(ex)
                 {
