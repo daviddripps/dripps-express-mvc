@@ -1,12 +1,20 @@
-module.exports = function(controller_dir) {
+module.exports = function(controller_dir, file_extension) {
   var fs = require('fs'),
-    dir = controller_dir,
-    handleError = function(err, req, res) {
-      throw err;
-    };
+      dir = controller_dir,
+      ext = file_extension || 'js',
+      handleError = function(err, req, res) {
+        throw err;
+      };
+  
+  //add a convenience method to the String prototype for camelCasing the actions
+  String.prototype.camelCase = function() {
+    return this.replace(/(\-[a-z])/g, function($1){ return $1.toUpperCase().replace('-',''); });
+  };
   
   //add slash to controller dir
   if(dir.charAt(dir.length-1) != '/') dir += '/';
+  //remove prepending periods from the file extension
+  ext = ext.replace(/^\.+/,'');
   
   //MVC routes
   function routeRequest(req, res) {
@@ -23,13 +31,9 @@ module.exports = function(controller_dir) {
     
     action = action.toLowerCase();
     controller = controller.toLowerCase();
-    filename = dir + controller + '.js';
+    filename = dir + controller + '.' + ext;
     
-    fs.stat(filename, function(err, stats) {
-      String.prototype.camelCase = function() {
-        return this.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
-      };
-      
+    fs.stat(filename, function(err, stats) {      
       //if there are errors
       if(err) {
         try {

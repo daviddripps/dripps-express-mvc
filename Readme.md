@@ -30,10 +30,10 @@ see the example directory for more information.
 
 ## Usage
 
-After installing the NPM package we need to add it to Express.  Place the following in your app.js before your app.configure().  The module takes the absolute path to the controllers directory as its only parameter.
+After installing the NPM package we need to add it to Express.  Place the following in your app.js before your app.configure().  The module takes the absolute path to the controllers directory and the file extension of your controllers as parameters.
 
 ``` javascript
-var mvc = require('dripps-express-mvc')(__dirname + '/controllers');
+var mvc = require('dripps-express-mvc')(__dirname + '/controllers', 'js');
 ```
 
 Then, place the following in your ```app.configure()``` somewhere before ```app.use(express.static(__dirname + '/public'))``` and ```app.use(app.router)```.

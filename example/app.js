@@ -3,7 +3,10 @@
  */
 
 var express = require('express'),
-    mvc = require('../')(__dirname + '/controllers');
+    //Express MVC supports arbitrary file extensions
+    //for instance: in the line below, you can uncomment the second parameter
+    //  if you've written your controllers in coffeescript
+    mvc = require('../')(__dirname + '/controllers' /*, 'coffee' */);
 
 var app = module.exports = express.createServer();
 
