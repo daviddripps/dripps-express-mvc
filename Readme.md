@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/daviddripps/dripps-express-mvc.png)](http://travis-ci.org/daviddripps/dripps-express-mvc)
 # Dripps's Express MVC
 
 Yet another approach to MVC in Express.  Coming from a PHP/Zend background, the conventions used here seem more intuitive to me than the other options I uncovered while building [Netmarks](http://www.mynetmarks.com).
